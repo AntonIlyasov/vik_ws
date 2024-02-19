@@ -113,7 +113,7 @@ cam_control/clean: cam_control/CMakeFiles/cam_control.dir/clean
 # Directory level rules for directory eth_vik_rx
 
 # Recursive "all" directory target.
-eth_vik_rx/all: eth_vik_rx/CMakeFiles/vik_udp_rx.dir/all
+eth_vik_rx/all: eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/all
 
 .PHONY : eth_vik_rx/all
 
@@ -123,8 +123,8 @@ eth_vik_rx/preinstall:
 .PHONY : eth_vik_rx/preinstall
 
 # Recursive "clean" directory target.
-eth_vik_rx/clean: eth_vik_rx/CMakeFiles/vik_udp_rx.dir/clean
 eth_vik_rx/clean: eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir/clean
+eth_vik_rx/clean: eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/clean
 eth_vik_rx/clean: eth_vik_rx/CMakeFiles/std_msgs_generate_messages_nodejs.dir/clean
 eth_vik_rx/clean: eth_vik_rx/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
 eth_vik_rx/clean: eth_vik_rx/CMakeFiles/roscpp_generate_messages_eus.dir/clean
@@ -472,33 +472,6 @@ gtest/googletest/CMakeFiles/gtest.dir/clean:
 .PHONY : gtest/googletest/CMakeFiles/gtest.dir/clean
 
 #=============================================================================
-# Target rules for target eth_vik_rx/CMakeFiles/vik_udp_rx.dir
-
-# All Build rule for target.
-eth_vik_rx/CMakeFiles/vik_udp_rx.dir/all:
-	$(MAKE) -f eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_udp_rx.dir/depend
-	$(MAKE) -f eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/anton202/vik_ws/build/CMakeFiles --progress-num=15,16,17 "Built target vik_udp_rx"
-.PHONY : eth_vik_rx/CMakeFiles/vik_udp_rx.dir/all
-
-# Build rule for subdir invocation for target.
-eth_vik_rx/CMakeFiles/vik_udp_rx.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/anton202/vik_ws/build/CMakeFiles 3
-	$(MAKE) -f CMakeFiles/Makefile2 eth_vik_rx/CMakeFiles/vik_udp_rx.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/anton202/vik_ws/build/CMakeFiles 0
-.PHONY : eth_vik_rx/CMakeFiles/vik_udp_rx.dir/rule
-
-# Convenience name for target.
-vik_udp_rx: eth_vik_rx/CMakeFiles/vik_udp_rx.dir/rule
-
-.PHONY : vik_udp_rx
-
-# clean rule for target.
-eth_vik_rx/CMakeFiles/vik_udp_rx.dir/clean:
-	$(MAKE) -f eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_udp_rx.dir/clean
-.PHONY : eth_vik_rx/CMakeFiles/vik_udp_rx.dir/clean
-
-#=============================================================================
 # Target rules for target eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir
 
 # All Build rule for target.
@@ -524,6 +497,33 @@ std_msgs_generate_messages_py: eth_vik_rx/CMakeFiles/std_msgs_generate_messages_
 eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir/clean:
 	$(MAKE) -f eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir/build.make eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir/clean
 .PHONY : eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir/clean
+
+#=============================================================================
+# Target rules for target eth_vik_rx/CMakeFiles/vik_tcp_rx.dir
+
+# All Build rule for target.
+eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/all:
+	$(MAKE) -f eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/depend
+	$(MAKE) -f eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/anton202/vik_ws/build/CMakeFiles --progress-num=15,16,17 "Built target vik_tcp_rx"
+.PHONY : eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/all
+
+# Build rule for subdir invocation for target.
+eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/anton202/vik_ws/build/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/anton202/vik_ws/build/CMakeFiles 0
+.PHONY : eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/rule
+
+# Convenience name for target.
+vik_tcp_rx: eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/rule
+
+.PHONY : vik_tcp_rx
+
+# clean rule for target.
+eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/clean:
+	$(MAKE) -f eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/clean
+.PHONY : eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/clean
 
 #=============================================================================
 # Target rules for target eth_vik_rx/CMakeFiles/std_msgs_generate_messages_nodejs.dir

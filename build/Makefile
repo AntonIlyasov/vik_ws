@@ -285,19 +285,6 @@ gtest/fast:
 .PHONY : gtest/fast
 
 #=============================================================================
-# Target rules for targets named vik_udp_rx
-
-# Build rule for target.
-vik_udp_rx: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 vik_udp_rx
-.PHONY : vik_udp_rx
-
-# fast build rule for target.
-vik_udp_rx/fast:
-	$(MAKE) -f eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build
-.PHONY : vik_udp_rx/fast
-
-#=============================================================================
 # Target rules for targets named std_msgs_generate_messages_py
 
 # Build rule for target.
@@ -309,6 +296,19 @@ std_msgs_generate_messages_py: cmake_check_build_system
 std_msgs_generate_messages_py/fast:
 	$(MAKE) -f eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir/build.make eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir/build
 .PHONY : std_msgs_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named vik_tcp_rx
+
+# Build rule for target.
+vik_tcp_rx: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 vik_tcp_rx
+.PHONY : vik_tcp_rx
+
+# fast build rule for target.
+vik_tcp_rx/fast:
+	$(MAKE) -f eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build
+.PHONY : vik_tcp_rx/fast
 
 #=============================================================================
 # Target rules for targets named std_msgs_generate_messages_nodejs
@@ -800,8 +800,8 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
-	@echo "... vik_udp_rx"
 	@echo "... std_msgs_generate_messages_py"
+	@echo "... vik_tcp_rx"
 	@echo "... std_msgs_generate_messages_nodejs"
 	@echo "... roscpp_generate_messages_cpp"
 	@echo "... roscpp_generate_messages_eus"

@@ -64,7 +64,14 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "bit": "cpp"
+        "bit": "cpp",
+        "strstream": "cpp",
+        "forward_list": "cpp",
+        "unordered_set": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "shared_mutex": "cpp",
+        "cfenv": "cpp"
     },
     "python.autoComplete.extraPaths": [
         "/home/anton/gyro_ws/devel/lib/python3/dist-packages",

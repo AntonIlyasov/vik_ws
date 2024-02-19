@@ -168,21 +168,6 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-eth_vik_rx/CMakeFiles/vik_udp_rx.dir/rule:
-	cd /home/anton202/vik_ws/build && $(MAKE) -f CMakeFiles/Makefile2 eth_vik_rx/CMakeFiles/vik_udp_rx.dir/rule
-.PHONY : eth_vik_rx/CMakeFiles/vik_udp_rx.dir/rule
-
-# Convenience name for target.
-vik_udp_rx: eth_vik_rx/CMakeFiles/vik_udp_rx.dir/rule
-
-.PHONY : vik_udp_rx
-
-# fast build rule for target.
-vik_udp_rx/fast:
-	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build
-.PHONY : vik_udp_rx/fast
-
-# Convenience name for target.
 eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir/rule:
 	cd /home/anton202/vik_ws/build && $(MAKE) -f CMakeFiles/Makefile2 eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir/rule
 .PHONY : eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir/rule
@@ -196,6 +181,21 @@ std_msgs_generate_messages_py: eth_vik_rx/CMakeFiles/std_msgs_generate_messages_
 std_msgs_generate_messages_py/fast:
 	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir/build.make eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir/build
 .PHONY : std_msgs_generate_messages_py/fast
+
+# Convenience name for target.
+eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/rule:
+	cd /home/anton202/vik_ws/build && $(MAKE) -f CMakeFiles/Makefile2 eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/rule
+.PHONY : eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/rule
+
+# Convenience name for target.
+vik_tcp_rx: eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/rule
+
+.PHONY : vik_tcp_rx
+
+# fast build rule for target.
+vik_tcp_rx/fast:
+	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build
+.PHONY : vik_tcp_rx/fast
 
 # Convenience name for target.
 eth_vik_rx/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule:
@@ -413,7 +413,7 @@ src/umba_crc_table.o: src/umba_crc_table.c.o
 
 # target to build an object file
 src/umba_crc_table.c.o:
-	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_udp_rx.dir/src/umba_crc_table.c.o
+	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/src/umba_crc_table.c.o
 .PHONY : src/umba_crc_table.c.o
 
 src/umba_crc_table.i: src/umba_crc_table.c.i
@@ -422,7 +422,7 @@ src/umba_crc_table.i: src/umba_crc_table.c.i
 
 # target to preprocess a source file
 src/umba_crc_table.c.i:
-	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_udp_rx.dir/src/umba_crc_table.c.i
+	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/src/umba_crc_table.c.i
 .PHONY : src/umba_crc_table.c.i
 
 src/umba_crc_table.s: src/umba_crc_table.c.s
@@ -431,35 +431,35 @@ src/umba_crc_table.s: src/umba_crc_table.c.s
 
 # target to generate assembly for a file
 src/umba_crc_table.c.s:
-	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_udp_rx.dir/src/umba_crc_table.c.s
+	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/src/umba_crc_table.c.s
 .PHONY : src/umba_crc_table.c.s
 
-src/vik_udp_rx.o: src/vik_udp_rx.cpp.o
+src/vik_tcp_rx_discrete.o: src/vik_tcp_rx_discrete.cpp.o
 
-.PHONY : src/vik_udp_rx.o
+.PHONY : src/vik_tcp_rx_discrete.o
 
 # target to build an object file
-src/vik_udp_rx.cpp.o:
-	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_udp_rx.dir/src/vik_udp_rx.cpp.o
-.PHONY : src/vik_udp_rx.cpp.o
+src/vik_tcp_rx_discrete.cpp.o:
+	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/src/vik_tcp_rx_discrete.cpp.o
+.PHONY : src/vik_tcp_rx_discrete.cpp.o
 
-src/vik_udp_rx.i: src/vik_udp_rx.cpp.i
+src/vik_tcp_rx_discrete.i: src/vik_tcp_rx_discrete.cpp.i
 
-.PHONY : src/vik_udp_rx.i
+.PHONY : src/vik_tcp_rx_discrete.i
 
 # target to preprocess a source file
-src/vik_udp_rx.cpp.i:
-	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_udp_rx.dir/src/vik_udp_rx.cpp.i
-.PHONY : src/vik_udp_rx.cpp.i
+src/vik_tcp_rx_discrete.cpp.i:
+	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/src/vik_tcp_rx_discrete.cpp.i
+.PHONY : src/vik_tcp_rx_discrete.cpp.i
 
-src/vik_udp_rx.s: src/vik_udp_rx.cpp.s
+src/vik_tcp_rx_discrete.s: src/vik_tcp_rx_discrete.cpp.s
 
-.PHONY : src/vik_udp_rx.s
+.PHONY : src/vik_tcp_rx_discrete.s
 
 # target to generate assembly for a file
-src/vik_udp_rx.cpp.s:
-	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_udp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_udp_rx.dir/src/vik_udp_rx.cpp.s
-.PHONY : src/vik_udp_rx.cpp.s
+src/vik_tcp_rx_discrete.cpp.s:
+	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/build.make eth_vik_rx/CMakeFiles/vik_tcp_rx.dir/src/vik_tcp_rx_discrete.cpp.s
+.PHONY : src/vik_tcp_rx_discrete.cpp.s
 
 # Help Target
 help:
@@ -471,8 +471,8 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... test"
-	@echo "... vik_udp_rx"
 	@echo "... std_msgs_generate_messages_py"
+	@echo "... vik_tcp_rx"
 	@echo "... std_msgs_generate_messages_nodejs"
 	@echo "... roscpp_generate_messages_cpp"
 	@echo "... roscpp_generate_messages_eus"
@@ -493,9 +493,9 @@ help:
 	@echo "... src/umba_crc_table.o"
 	@echo "... src/umba_crc_table.i"
 	@echo "... src/umba_crc_table.s"
-	@echo "... src/vik_udp_rx.o"
-	@echo "... src/vik_udp_rx.i"
-	@echo "... src/vik_udp_rx.s"
+	@echo "... src/vik_tcp_rx_discrete.o"
+	@echo "... src/vik_tcp_rx_discrete.i"
+	@echo "... src/vik_tcp_rx_discrete.s"
 .PHONY : help
 
 

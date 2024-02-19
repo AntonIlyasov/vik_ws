@@ -21,7 +21,8 @@ using boost::asio::ip::address;
 
 class UDPServer{
 public:
-  UDPServer(boost::asio::io_service& io_service): socket_(io_service, udp::endpoint(udp::v4(), PORT)){
+  UDPServer(boost::asio::io_service& io_service)
+  : socket_(io_service, udp::endpoint(udp::v4(), PORT)){
     toTofCamControlPub   = node.advertise<std_msgs::ByteMultiArray>(TO_TOF_CAM_CONTROL_TOPIC_NAME, 0);
     fromTofCamControlSub = node.subscribe<std_msgs::ByteMultiArray>(FROM_TOF_CAM_CONTROL_TOPIC_NAME, 0, 
         &UDPServer::from_tof_cam_control_callback, this);
@@ -281,19 +282,120 @@ private:
 
 };
 
+class Session
+{
+public:
+  Session(boost::asio::io_context& io_context)
+  : socket_(io_context) {
+    recvd_count = 0;
+    send_count  = 0;
+  }
+
+  tcp::socket& socket()
+  {
+    return socket_;
+  }
+
+  void start()
+  {
+    socket_.async_read_some(boost::asio::buffer(data_, max_length),
+        boost::bind(&Session::handle_read, this,
+          boost::asio::placeholders::error,
+          boost::asio::placeholders::bytes_transferred));
+  }
+
+private:
+  uint32_t recvd_count;
+  uint32_t send_count;
+
+  void handle_read(const boost::system::error_code& error,
+      size_t bytes_transferred)
+  {
+    if (!error)
+    {
+      
+    }
+    else
+    {
+      delete this;
+    }
+  }
+
+  void handle_write(const boost::system::error_code& error,
+      size_t bytes_transferred)
+  {
+    if (!error && bytes_transferred > 0)
+    {
+      std::cout << "\nSEND TO TCP: ";
+      for (int i = 0; i < bytes_transferred; i++){
+          printf("[%u]", data_[i]);
+      }
+      std::cout << std::endl;
+      send_count++;
+      std::cout << "\033[1;32msend_count\033[0m = " << send_count << "\n";
+      socket_.async_read_some(boost::asio::buffer(data_, max_length),
+          boost::bind(&Session::handle_read, this,
+            boost::asio::placeholders::error,
+            boost::asio::placeholders::bytes_transferred));
+    }
+    else
+    {
+      delete this;
+    }
+  }
+
+  tcp::socket socket_;
+  enum { max_length = 1024 };
+  uint8_t data_[max_length];
+};
+
+class TCPServer{
+public:
+  TCPServer(boost::asio::io_context& io_context)
+  : io_context(io_context),
+    acceptor(io_context, tcp::endpoint(tcp::v4(), PORT))
+  {
+    std::cout << "TCP SERVER IS RUNNING\n";
+    async_accept();
+  }
+private:
+  boost::asio::io_context& io_context;
+  tcp::acceptor acceptor;
+
+  void async_accept()
+  {
+    Session* new_Session = new Session(io_context);
+    acceptor.async_accept(new_Session->socket(),
+        boost::bind(&TCPServer::handle_accept, this, new_Session,
+        boost::asio::placeholders::error));
+  }
+
+  void handle_accept(Session* new_Session,
+      const boost::system::error_code& error){
+    if (!error){
+      new_Session->start();
+    }
+    else {
+      delete new_Session;
+    }
+    async_accept();
+  }
+};
+
 int main(int argc, char* argv[])
 {
   try{
     std::cout << "\n\033[1;32m╔═══════════════════════════════╗\033[0m"
-              << "\n\033[1;32m║     vik_udp_rx is running!    ║\033[0m" 
+              << "\n\033[1;32m║     vik_tcp_rx is running!    ║\033[0m" 
               << "\n\033[1;32m╚═══════════════════════════════╝\033[0m\n";
-    ros::init(argc, argv, "vik_udp_rx");
+    ros::init(argc, argv, "vik_tcp_rx");
 
-    boost::asio::io_service io_service;
-    UDPServer udpServer(io_service);
+    boost::asio::io_context io_context;
+    TCPServer tcpServer(io_context);
+
     while(ros::ok()){
-      udpServer.nodeProcess();
-      io_service.poll_one();
+      udpServer.nodeProcess();  // ??
+      io_context.poll_one();
       ros::spinOnce();
     }
   } catch (std::exception e){

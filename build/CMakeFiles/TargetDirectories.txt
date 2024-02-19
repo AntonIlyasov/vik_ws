@@ -39,8 +39,8 @@
 /home/anton202/vik_ws/build/eth_vik_rx/CMakeFiles/rebuild_cache.dir
 /home/anton202/vik_ws/build/eth_vik_rx/CMakeFiles/edit_cache.dir
 /home/anton202/vik_ws/build/eth_vik_rx/CMakeFiles/test.dir
-/home/anton202/vik_ws/build/eth_vik_rx/CMakeFiles/vik_udp_rx.dir
 /home/anton202/vik_ws/build/eth_vik_rx/CMakeFiles/std_msgs_generate_messages_py.dir
+/home/anton202/vik_ws/build/eth_vik_rx/CMakeFiles/vik_tcp_rx.dir
 /home/anton202/vik_ws/build/eth_vik_rx/CMakeFiles/std_msgs_generate_messages_nodejs.dir
 /home/anton202/vik_ws/build/eth_vik_rx/CMakeFiles/roscpp_generate_messages_cpp.dir
 /home/anton202/vik_ws/build/eth_vik_rx/CMakeFiles/roscpp_generate_messages_eus.dir
