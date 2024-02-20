@@ -38,6 +38,16 @@ fstream
 cam_control/cam_control.h
 /home/anton202/vik_ws/src/cam_control/src/cam_control/cam_control.h
 
+/home/anton202/vik_ws/src/cam_control/src/cam_control_node.cpp
+iostream
+-
+ros/ros.h
+-
+sensor_msgs/Image.h
+/home/anton202/vik_ws/src/cam_control/src/sensor_msgs/Image.h
+cam_control/cam_control.h
+/home/anton202/vik_ws/src/cam_control/src/cam_control/cam_control.h
+
 /opt/ros/noetic/include/cv_bridge/cv_bridge.h
 sensor_msgs/Image.h
 -
