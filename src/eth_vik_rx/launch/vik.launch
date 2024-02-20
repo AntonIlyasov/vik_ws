@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+<!--node`s params-->
+	<arg name="tcp_port_general" 		default="1234"/>
+	<arg name="tcp_port_save_frame" 	default="1111"/>
+
+<!--launch nodes-->
+
+	<node pkg="eth_vik_rx" type="vik_tcp_rx" name="vik_tcp_rx" output="screen"/>
+		<param name="_tcp_port_general"	value="$(arg tcp_port_general)"/>
+
+	<node pkg="cam_control" type="cam_control" name="cam_control" output="screen"/>
+		<param name="_tcp_port_save_frame" value="$(arg tcp_port_save_frame)"/>
+		
+</launch>

@@ -9,8 +9,6 @@ uint32_t countClbFromTofCamControl = 0;
 using boost::asio::ip::tcp;
 using boost::asio::ip::address;
 
-#define PORT 1234
-
 // размеры пакетов данных в нормальном режиме
 #define DATA_FROM_TCP_SIZE                     9  // [AA][BB][LEN][1b DATA][4b KeepAL][CRC]
 #define DATA_TO_TCP_SIZE                       10 // [BB][AA][LEN][1b DATA][OK][4b KeepAL][CRC]
@@ -305,9 +303,9 @@ private:
 
 class TCPServer{
 public:
-  TCPServer(boost::asio::io_context& io_context)
-  : io_context(io_context),
-    acceptor(io_context, tcp::endpoint(tcp::v4(), PORT))
+  TCPServer(boost::asio::io_context& io_context, int tcp_port_general)
+  : io_context(io_context), tcp_port_general_(tcp_port_general), 
+    acceptor(io_context, tcp::endpoint(tcp::v4(), tcp_port_general_))
   {
     std::cout << "TCP SERVER IS RUNNING\n";
     async_accept();
@@ -315,6 +313,7 @@ public:
 private:
   boost::asio::io_context& io_context;
   tcp::acceptor acceptor;
+  int tcp_port_general_;
 
   void async_accept()
   {
@@ -343,9 +342,11 @@ int main(int argc, char* argv[])
               << "\n\033[1;32m║     vik_tcp_rx is running!    ║\033[0m" 
               << "\n\033[1;32m╚═══════════════════════════════╝\033[0m\n";
     ros::init(argc, argv, "vik_tcp_rx");
+    int tcp_port_general = 1234;
+    ros::param::get("/_tcp_port_general", tcp_port_general);
 
     boost::asio::io_context io_context;
-    TCPServer tcpServer(io_context);
+    TCPServer tcpServer(io_context, tcp_port_general);
 
     while(ros::ok()){
       io_context.poll_one();
