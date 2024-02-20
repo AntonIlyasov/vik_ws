@@ -7,4 +7,7 @@
 # new environment variables
 
 # modified environment variables
+export CMAKE_PREFIX_PATH="/home/anton202/vik_ws/devel:$CMAKE_PREFIX_PATH"
 export PWD='/home/anton202/vik_ws/build'
+export ROSLISP_PACKAGE_DIRECTORIES='/home/anton202/vik_ws/devel/share/common-lisp'
+export ROS_PACKAGE_PATH="/home/anton202/vik_ws/src:$ROS_PACKAGE_PATH"

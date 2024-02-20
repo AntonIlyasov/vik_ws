@@ -426,12 +426,6 @@ cam_control_BINARY_DIR:STATIC=/home/anton202/vik_ws/build/cam_control
 //Value Computed by CMake
 cam_control_SOURCE_DIR:STATIC=/home/anton202/vik_ws/src/cam_control
 
-//Value Computed by CMake
-cam_rtsp_vik_BINARY_DIR:STATIC=/home/anton202/vik_ws/build/cam_rtsp_vik
-
-//Value Computed by CMake
-cam_rtsp_vik_SOURCE_DIR:STATIC=/home/anton202/vik_ws/src/cam_rtsp_vik
-
 //The directory containing a CMake configuration file for catkin.
 catkin_DIR:PATH=/opt/ros/noetic/share/catkin/cmake
 

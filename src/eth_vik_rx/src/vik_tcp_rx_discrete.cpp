@@ -5,6 +5,7 @@
 #include <std_msgs/ByteMultiArray.h>
 #include "umba_crc_table.h"
 
+uint32_t countClbFromTofCamControl = 0;
 using boost::asio::ip::tcp;
 using boost::asio::ip::address;
 
@@ -47,7 +48,7 @@ public:
           boost::asio::placeholders::bytes_transferred));
   }
 
-  void async_write(size_t bytes_transferred)
+  void async_write()
   {
     boost::asio::async_write(socket_,
         boost::asio::buffer(dataToTCP, DATA_TO_TCP_SIZE),
@@ -79,9 +80,7 @@ private:
   uint32_t resvdFailCount                     = 0;
   uint32_t sendFailCount                      = 0;
   uint32_t resvdBytesFromTofCamControl        = 0;
-
-  bool getMsgFromTCP                          = false;
-
+  
   struct currentState_{
     uint8_t keepalive[4]                      = {0};
     uint8_t from_tof_cam_control_command      = 0;
@@ -96,7 +95,9 @@ private:
   // обработчик сообщений от ROS-топика с Tof Cam Control. 
   // полученные данные с ROS-топика "расфасовываются" в переменные для дальнейшей отправки по TCP
   void from_tof_cam_control_callback(const std_msgs::ByteMultiArray::ConstPtr& recvdMsg){
-    
+    countClbFromTofCamControl++;
+    if (countClbFromTofCamControl == 2) return;
+    std::cout << "CallBack!!!! countClbFromTofCamControl = " << countClbFromTofCamControl;
     recvd_count_tof_cam_control++;
     resvdBytesFromTofCamControl = recvdMsg->data.size();
     
@@ -162,7 +163,6 @@ private:
       printf("\n");
     } else {
       memset(dataFromTCP, 0, sizeof(dataFromTCP));
-      async_read();
       return false;
     }
     return true;
@@ -215,19 +215,11 @@ private:
       dataToTCP[sizeof(dataToTCP) - 1]  = umba_crc8_table(dataToTCP, sizeof(dataToTCP) - 1);
     }
 
-    // отправляем пакет данных по протоколу TCP   TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // if (resvdBytesFromTofCamControl == DATA_FROM_TOF_CAM_CONTROL_TOPIC_SIZE){
-    //   boost::system::error_code error;
-    //   auto sent = socket_.send_to(boost::asio::buffer(dataToTCP), sender_endpoint_, 0, error);
-    //   if (!error && sent > 0){
-    //     // checkSendToTCPTime();
-    //     currentState.from_tof_cam_control_OK = 0;
-    //     send_count_TCP++;
-    //     printSendToTCPData(sent);
-    //   }
-    // }
+    // отправляем пакет данных по протоколу TCP
+    if (resvdBytesFromTofCamControl == DATA_FROM_TOF_CAM_CONTROL_TOPIC_SIZE){
+      async_write();
+    }
     resvdBytesFromTofCamControl = 0;
-
   }
 
   // возвращает длину пакета
@@ -268,6 +260,7 @@ private:
   {
     if (!error)
     {
+      countClbFromTofCamControl = 0;
       if(!parserTCP(dataFromTCP)){
         std::cout << "\033[1;31mTCP data not valid\033[0m\n";
         memset(dataFromTCP, 0, sizeof(dataFromTCP));
@@ -276,8 +269,10 @@ private:
       }
       //checkGetFromTCPTime();
       recvd_count_TCP++;
-      if (!printGetFromTCPData(bytes_transferred)) return;
-      getMsgFromTCP = true;
+      if (!printGetFromTCPData(bytes_transferred)){
+        async_read();
+        return;
+      }
       memcpy(dataToTofCamControl,  &dataFromTCP[3], sizeof(dataToTofCamControl));
       memcpy(currentState.keepalive,    &dataFromTCP[4], sizeof(currentState.keepalive));
       sendMsgToTofCamControl();
@@ -292,24 +287,19 @@ private:
   void handle_write(const boost::system::error_code& error,
       size_t bytes_transferred)
   {
-    // if (!error && bytes_transferred > 0)
-    // {
-    //   std::cout << "\nSEND TO TCP: ";
-    //   for (int i = 0; i < bytes_transferred; i++){
-    //       printf("[%u]", data_[i]);
-    //   }
-    //   std::cout << std::endl;
-    //   send_count++;
-    //   std::cout << "\033[1;32msend_count\033[0m = " << send_count << "\n";
-    //   socket_.async_read_some(boost::asio::buffer(data_, max_length),
-    //       boost::bind(&Session::tcp_handle_receive, this,
-    //         boost::asio::placeholders::error,
-    //         boost::asio::placeholders::bytes_transferred));
-    // }
-    // else
-    // {
-    //   delete this;
-    // }
+    if (!error && bytes_transferred > 0)
+    {
+      std::cout << error.message() << "\n";
+      std::cout << "\n!!!OK!!!\n";
+      currentState.from_tof_cam_control_OK = 0;
+      send_count_TCP++;
+      printSendToTCPData(bytes_transferred);
+    }
+    else
+    {
+      std::cout << error.message() << "\n";
+      delete this;
+    }
   }
 };
 
