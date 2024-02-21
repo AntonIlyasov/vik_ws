@@ -305,7 +305,7 @@ class TCPServer{
 public:
   TCPServer(boost::asio::io_context& io_context, int tcp_port_general)
   : io_context(io_context), tcp_port_general_(tcp_port_general), 
-    acceptor(io_context, tcp::endpoint(tcp::v4(), tcp_port_general_))
+    acceptor(io_context, tcp::endpoint(tcp::v4(), tcp_port_general))
   {
     std::cout << "TCP SERVER IS RUNNING\n";
     async_accept();
@@ -344,6 +344,7 @@ int main(int argc, char* argv[])
     ros::init(argc, argv, "vik_tcp_rx");
     int tcp_port_general = 1234;
     ros::param::get("/_tcp_port_general", tcp_port_general);
+    std::cout << "port: " << tcp_port_general << "\n";
 
     boost::asio::io_context io_context;
     TCPServer tcpServer(io_context, tcp_port_general);
