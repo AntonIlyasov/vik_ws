@@ -307,7 +307,6 @@ public:
   : io_context(io_context), tcp_port_general_(tcp_port_general), 
     acceptor(io_context, tcp::endpoint(tcp::v4(), tcp_port_general))
   {
-    std::cout << "TCP SERVER IS RUNNING\n";
     async_accept();
   }
 private:

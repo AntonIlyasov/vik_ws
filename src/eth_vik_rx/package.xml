@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>eth_vik_rx</name>
+  <name>vik_tcp_rx</name>
   <version>0.0.0</version>
-  <description>The eth_vik_rx package</description>
+  <description>The vik_tcp_rx package</description>
 
   <maintainer email="anton@todo.todo">anton</maintainer>
 

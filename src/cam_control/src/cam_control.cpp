@@ -4,9 +4,9 @@ CamControl::CamControl(std::string tcp_ip_save_frame, int tcp_port_save_frame)
     : tcp_port_save_frame_(tcp_port_save_frame),
       tcp_ip_save_frame_(tcp_ip_save_frame){
 
-  toVicUdpRxPub   = _node.advertise<std_msgs::ByteMultiArray>(TO_VIC_UDP_RX_TOPIC_NAME, 0);
-  fromVicUdpRxSub = _node.subscribe<std_msgs::ByteMultiArray>(FROM_VIC_UDP_RX_TOPIC_NAME, 0, 
-      &CamControl::from_vic_udp_rx_callback, this);
+  toVicTcpRxPub   = _node.advertise<std_msgs::ByteMultiArray>(TO_VIC_TCP_RX_TOPIC_NAME, 0);
+  fromVicTcpRxSub = _node.subscribe<std_msgs::ByteMultiArray>(FROM_VIC_TCP_RX_TOPIC_NAME, 0, 
+      &CamControl::from_vic_tcp_rx_callback, this);
 
   toTofCamPub     = _node.advertise<std_msgs::ByteMultiArray>(TO_TOF_CAM_TOPIC_NAME, 0);
   fromTofCamSub   = _node.subscribe<std_msgs::ByteMultiArray>(FROM_TOF_CAM_TOPIC_NAME, 0, 
@@ -16,8 +16,8 @@ CamControl::CamControl(std::string tcp_ip_save_frame, int tcp_port_save_frame)
   depth_sub       = _node.subscribe(TO_DEPTH_TOPIC_NAME,  0, &CamControl::depthCallback, this);
   ir_sub          = _node.subscribe(TO_IR_TOPIC_NAME,     0, &CamControl::irCallback,    this);
 
-  memset(dataFromVicUdpRx, 0, sizeof(dataFromVicUdpRx));
-  memset(dataToVicUdpRx, 0, sizeof(dataToVicUdpRx));
+  memset(dataFromVicTcpRx, 0, sizeof(dataFromVicTcpRx));
+  memset(dataToVicTcpRx, 0, sizeof(dataToVicTcpRx));
   memset(dataToTofCam, 0, sizeof(dataToTofCam));
   memset(dataFromTofCam, 0, sizeof(dataFromTofCam));
 }
@@ -26,8 +26,8 @@ void CamControl::nodeProcess(){
 
   static uint32_t fail_count = 0;
   
-  if (getMsgFromVicUdpRx){
-    getMsgFromVicUdpRx = false;
+  if (getMsgFromVicTcpRx){
+    getMsgFromVicTcpRx = false;
     sendMsgToTofCam();
     sendMsgToTofCamFlag = true;
     getMsgFromTofCam    = false;
@@ -37,7 +37,7 @@ void CamControl::nodeProcess(){
     sendMsgToTofCamFlag = false;
     getMsgFromTofCam    = false;
     checkSaveFrame();
-    sendMsgToVicUdpRx();
+    sendMsgToVicTcpRx();
   }
   if (sendMsgToTofCamFlag && !getMsgFromTofCam){
     fail_count++;
@@ -48,14 +48,14 @@ void CamControl::nodeProcess(){
     std::cout << "[TOF CAM IS NOT AVAILABLE]\n";
     sendMsgToTofCamFlag = false;
     getMsgFromTofCam    = false;
-    dataToVicUdpRx[0]   = dataFromVicUdpRx[0];
-    dataToVicUdpRx[1]   = static_cast<uint8_t>(TofCamControlErrorStatus::tof_cam_is_not_available);
-    sendMsgToVicUdpRx();
+    dataToVicTcpRx[0]   = dataFromVicTcpRx[0];
+    dataToVicTcpRx[1]   = static_cast<uint8_t>(TofCamControlErrorStatus::tof_cam_is_not_available);
+    sendMsgToVicTcpRx();
   }
 }
 
 void CamControl::checkSaveFrame() {
-  if(dataFromVicUdpRx[0] == 5){
+  if(dataFromVicTcpRx[0] == 5){
     if (curr_color_img.cols != 1920 || curr_color_img.rows != 1080){
       std::this_thread::sleep_for(std::chrono::milliseconds(time_wait_sec * 1000));
       ros::spinOnce();
@@ -121,21 +121,21 @@ void CamControl::irCallback(const sensor_msgs::Image::ConstPtr& msg) {
   // cv::waitKey(3);
 }
 
-void CamControl::from_vic_udp_rx_callback(const std_msgs::ByteMultiArray::ConstPtr& recvdMsg) {
-  getMsgFromVicUdpRx = true;
-  recvd_count_vic_udp_rx++;
-  resvdBytesFromVicUdpRx = recvdMsg->data.size();
+void CamControl::from_vic_tcp_rx_callback(const std_msgs::ByteMultiArray::ConstPtr& recvdMsg) {
+  getMsgFromVicTcpRx = true;
+  recvd_count_vic_Tcp_rx++;
+  resvdBytesFromVicTcpRx = recvdMsg->data.size();
 
-  std::cout << "\nrecvd_count_vic_udp_rx = " << recvd_count_vic_udp_rx << std::endl;
-  std::cout << "\033[1;34mRECVD FROM TOPIC toTofCamControlTopic resvdBytesFromVicUdpRx: \033[0m";
+  std::cout << "\nrecvd_count_vic_Tcp_rx = " << recvd_count_vic_Tcp_rx << std::endl;
+  std::cout << "\033[1;34mRECVD FROM TOPIC toTofCamControlTopic resvdBytesFromVicTcpRx: \033[0m";
 
-  if (recvdMsg->data.size() == DATA_FROM_VIC_UDP_RX_SIZE){
+  if (recvdMsg->data.size() == DATA_FROM_VIC_TCP_RX_SIZE){
     for (int i = 0; i < recvdMsg->data.size(); i++){
-      dataFromVicUdpRx[i] = recvdMsg->data[i];
-      printf("[%u]", dataFromVicUdpRx[i]);
+      dataFromVicTcpRx[i] = recvdMsg->data[i];
+      printf("[%u]", dataFromVicTcpRx[i]);
     }
     std::cout << std::endl;
-    memcpy(dataToTofCam, dataFromVicUdpRx, sizeof(dataToTofCam));
+    memcpy(dataToTofCam, dataFromVicTcpRx, sizeof(dataToTofCam));
   }
 }
 
@@ -153,7 +153,7 @@ void CamControl::from_tof_cam_callback(const std_msgs::ByteMultiArray::ConstPtr&
       printf("[%u]", dataFromTofCam[i]);
     }
     std::cout << std::endl;
-    memcpy(dataToVicUdpRx, dataFromTofCam, sizeof(dataToVicUdpRx));
+    memcpy(dataToVicTcpRx, dataFromTofCam, sizeof(dataToVicTcpRx));
   }
 }
 
@@ -178,24 +178,24 @@ void CamControl::sendMsgToTofCam(){
   toTofCamPub.publish(msg);
 }
 
-void CamControl::sendMsgToVicUdpRx(){
+void CamControl::sendMsgToVicTcpRx(){
   //отправка пакета в топик "fromTofCamControlTopic"
   std_msgs::ByteMultiArray msg;
   msg.layout.dim.push_back(std_msgs::MultiArrayDimension());
   msg.layout.dim[0].size = 1;
-  msg.layout.dim[0].stride = sizeof(dataToVicUdpRx);
+  msg.layout.dim[0].stride = sizeof(dataToVicTcpRx);
   msg.data.clear();
 
-  send_count_vic_udp_rx++;
-  std::cout << "\nsend_count_vic_udp_rx = " << send_count_vic_udp_rx << std::endl;
+  send_count_vic_Tcp_rx++;
+  std::cout << "\nsend_count_vic_Tcp_rx = " << send_count_vic_Tcp_rx << std::endl;
   std::cout << "\033[1;34mSEND T0 fromTofCamControlTopic: \033[0m";
 
-  for (int i = 0; i < sizeof(dataToVicUdpRx); i++) {
-    printf("[%u]", dataToVicUdpRx[i]);
-    msg.data.push_back(dataToVicUdpRx[i]);
+  for (int i = 0; i < sizeof(dataToVicTcpRx); i++) {
+    printf("[%u]", dataToVicTcpRx[i]);
+    msg.data.push_back(dataToVicTcpRx[i]);
   }
   std::cout << "\n#######################saefsef###########################\n";
-  toVicUdpRxPub.publish(msg);
+  toVicTcpRxPub.publish(msg);
 }
 
 void CamControl::saveColorFrameMaxQuality(){
@@ -218,7 +218,7 @@ void CamControl::sendToTCPColorFrameMaxQuality(){
   
   if (ec || !socket.is_open()){
     std::cerr << ec.message() << "\n";
-    dataToVicUdpRx[1] = static_cast<uint8_t>(TofCamControlErrorStatus::img_server_is_not_available);
+    dataToVicTcpRx[1] = static_cast<uint8_t>(TofCamControlErrorStatus::img_server_is_not_available);
     return;
   }
 

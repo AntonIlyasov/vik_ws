@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(eth_vik_rx)
+project(vik_tcp_rx)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -33,7 +33,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES eth_vik_rx
+#  LIBRARIES vik_tcp_rx
 #  CATKIN_DEPENDS roscpp std_msgs
 #  DEPENDS system_lib
 )
@@ -47,11 +47,11 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
 set(SOURCES 
   src/umba_crc_table.c
-  include/eth_vik_rx/umba_crc_table.h)
+  include/vik_tcp_rx/umba_crc_table.h)
 
 # add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_executable(vik_tcp_rx src/vik_tcp_rx_discrete.cpp ${SOURCES})
-target_include_directories (vik_tcp_rx PRIVATE include/eth_vik_rx/ src/)
+target_include_directories (vik_tcp_rx PRIVATE include/vik_tcp_rx/ src/)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
