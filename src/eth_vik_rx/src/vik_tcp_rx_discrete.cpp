@@ -103,8 +103,8 @@ private:
         << resvdBytesFromTofCamControl << std::endl;
     std::cout << "recvd_count_tof_cam_control = " << recvd_count_tof_cam_control << std::endl;
 
-    if (recvdMsg->data.size() == DATA_FROM_TOF_CAM_CONTROL_TOPIC_SIZE){
-      for (int i = 0; i < recvdMsg->data.size(); i++){
+    if (resvdBytesFromTofCamControl == DATA_FROM_TOF_CAM_CONTROL_TOPIC_SIZE){
+      for (int i = 0; i < resvdBytesFromTofCamControl; i++){
         dataFromTofCamControl[i] = recvdMsg->data[i];
         printf("[%u]", dataFromTofCamControl[i]);
       }
@@ -201,22 +201,15 @@ private:
 
   // отправка полученных данных с ROS-топикa от Tof Cam Control пользователю по протоколу TCP
   void sendMsgToTCP(){
-
-    // формируем пакет данных для отправки по протоколу TCP
-    if (resvdBytesFromTofCamControl == DATA_FROM_TOF_CAM_CONTROL_TOPIC_SIZE){
-      dataToTCP[0] = 0xBB;  
-      dataToTCP[1] = 0xAA;  
-      dataToTCP[2] = sizeof(dataToTCP);
-      dataToTCP[3] = currentState.from_tof_cam_control_command;
-      dataToTCP[4] = currentState.from_tof_cam_control_OK;
-      memcpy(&dataToTCP[5], currentState.keepalive, sizeof(currentState.keepalive));
-      dataToTCP[sizeof(dataToTCP) - 1]  = umba_crc8_table(dataToTCP, sizeof(dataToTCP) - 1);
-    }
-
-    // отправляем пакет данных по протоколу TCP
-    if (resvdBytesFromTofCamControl == DATA_FROM_TOF_CAM_CONTROL_TOPIC_SIZE){
-      async_write();
-    }
+     // формируем пакет данных для отправки по протоколу TCP
+    dataToTCP[0] = 0xBB;  
+    dataToTCP[1] = 0xAA;  
+    dataToTCP[2] = sizeof(dataToTCP);
+    dataToTCP[3] = currentState.from_tof_cam_control_command;
+    dataToTCP[4] = currentState.from_tof_cam_control_OK;
+    memcpy(&dataToTCP[5], currentState.keepalive, sizeof(currentState.keepalive));
+    dataToTCP[sizeof(dataToTCP) - 1]  = umba_crc8_table(dataToTCP, sizeof(dataToTCP) - 1);
+    async_write();
     resvdBytesFromTofCamControl = 0;
   }
 
